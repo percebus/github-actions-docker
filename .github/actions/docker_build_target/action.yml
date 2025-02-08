@@ -25,7 +25,8 @@ runs:
   using: composite
 
   steps:
-    - name: "docker build: ${{ inputs.dockerfile }}"
+    - name: 'docker build: ${{ inputs.dockerfile }}'
+      shell: bash
       run: |
         docker build . \
           --file ${{ inputs.dockerfile }} \
