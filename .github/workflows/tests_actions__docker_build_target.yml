@@ -1,0 +1,58 @@
+name: Test actions/docker-build-target
+on:
+  push:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+  default:
+    name: default
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/docker_build_target
+        with:
+          target: final
+
+  matrix:
+    needs: default
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        target:
+          - base
+
+          # dev
+          - dev
+          - tested
+          - dist
+
+          # release
+          - release
+          - final
+
+        include:
+          - dockerfile: Dockerfile
+            target: base
+
+          - dockerfile: Dockerfile
+            target: dev
+
+          - dockerfile: Dockerfile
+            target: tested
+
+          - dockerfile: Dockerfile
+            image_tag_suffix: latest
+
+          - dockerfile: Dockerfile.next
+            image_tag_suffix: next
+
+    runs-on: ubuntu-latest
+    name: "${{ matrix.dockerfile }}: ${{ matrix.target }}"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/docker_build_target
+        with:
+          dockerfile: ${{ matrix.dockerfile }}
+          target: ${{ matrix.target }}
+          image_tag_suffix: ${{ matrix.image_tag_suffix }}
