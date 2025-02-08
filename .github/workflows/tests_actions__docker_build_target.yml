@@ -1,0 +1,57 @@
+name: Test actions/docker-build-target
+on:
+  push:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+# NOTE: Fixes "Error: Resource not accessible by integration"
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  default:
+    name: default
+    runs-on: ubuntu-latest
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/docker_build_target
+        with:
+          target: final
+
+  matrix:
+    needs: default
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        dockerfile:
+          - Dockerfile
+          - Dockerfile.next
+
+        image_tag_suffix:
+          - latest
+          - next
+
+        target:
+          # dev
+          - tested
+
+          # release
+          - release
+
+        exclude:
+          - dockerfile: Dockerfile.next
+            image_tag_suffix: latest
+
+          - dockerfile: Dockerfile
+            image_tag_suffix: next
+
+    runs-on: ubuntu-latest
+    name: "${{ matrix.image_tag_suffix }}: ${{ matrix.dockerfile }}:${{ matrix.target }}"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+      - uses: ./.github/actions/docker_build_target
+        with:
+          dockerfile: ${{ matrix.dockerfile }}
+          target: ${{ matrix.target }}
+          image_tag_suffix: ${{ matrix.image_tag_suffix }}

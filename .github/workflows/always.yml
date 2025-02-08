@@ -1,0 +1,10 @@
+name: "[C]ontinuous [I]ntegration"
+on:
+  push:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+  lint:
+    uses: percebus/github-actions-npm/.github/workflows/npm_run_script.yml@main
+    with:
+      script: lint
