@@ -26,6 +26,7 @@ runs:
 
   steps:
     - name: 'docker build: ${{ inputs.dockerfile }}'
+      shell: bash
       run: |
         docker build . \
           --file ${{ inputs.dockerfile }} \
