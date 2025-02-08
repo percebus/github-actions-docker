@@ -3,6 +3,7 @@ on:
   push:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
+# NOTE: Fixes "Error: Resource not accessible by integration"
 permissions:
   contents: read
   security-events: write
@@ -50,6 +51,10 @@ jobs:
 
           - dockerfile: Dockerfile.next
             image_tag_suffix: next
+
+        exclude:
+          - dockerfile: Dockerfile
+            target: final
 
     runs-on: ubuntu-latest
     name: "${{ matrix.dockerfile }}: ${{ matrix.target }}"

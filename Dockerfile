@@ -1,4 +1,4 @@
-FROM node:23 AS base
+FROM node:22 AS base
 
 FROM base AS project
 WORKDIR /usr/project
