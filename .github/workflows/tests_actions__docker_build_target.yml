@@ -33,16 +33,11 @@ jobs:
           - next
 
         target:
-          - base
-
           # dev
-          - dev
           - tested
-          - dist
 
           # release
           - release
-          - final
 
         exclude:
           - dockerfile: Dockerfile.next
@@ -51,13 +46,8 @@ jobs:
           - dockerfile: Dockerfile
             image_tag_suffix: next
 
-        # FIXME
-        # exclude:
-        #   - dockerfile: Dockerfile
-        #     target: final
-
     runs-on: ubuntu-latest
-    name: "${{ matrix.dockerfile }}: ${{ matrix.target }}"
+    name: "${{ matrix.dockerfile }}.${{ matrix.target }}:${{ matrix.image_tag_suffix }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/docker_build_target
