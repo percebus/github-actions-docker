@@ -43,9 +43,10 @@ jobs:
           - dockerfile: Dockerfile.next
             image_tag_suffix: next
 
-        exclude:
-          - dockerfile: Dockerfile
-            target: final
+        # FIXME
+        # exclude:
+        #   - dockerfile: Dockerfile
+        #     target: final
 
     runs-on: ubuntu-latest
     name: "${{ matrix.dockerfile }}: ${{ matrix.target }}"
