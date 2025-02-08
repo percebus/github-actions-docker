@@ -38,15 +38,6 @@ jobs:
 
         include:
           - dockerfile: Dockerfile
-            target: base
-
-          - dockerfile: Dockerfile
-            target: dev
-
-          - dockerfile: Dockerfile
-            target: tested
-
-          - dockerfile: Dockerfile
             image_tag_suffix: latest
 
           - dockerfile: Dockerfile.next
