@@ -3,6 +3,10 @@ on:
   push:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   default:
     name: default
