@@ -24,6 +24,14 @@ jobs:
       fail-fast: false
       max-parallel: 10
       matrix:
+        dockerfile:
+          - Dockerfile
+          - Dockerfile.next
+
+        image_tag_suffix:
+          - latest
+          - next
+
         target:
           - base
 
@@ -36,11 +44,11 @@ jobs:
           - release
           - final
 
-        include:
-          - dockerfile: Dockerfile
+        exclude:
+          - dockerfile: Dockerfile.next
             image_tag_suffix: latest
 
-          - dockerfile: Dockerfile.next
+          - dockerfile: Dockerfile
             image_tag_suffix: next
 
         # FIXME
