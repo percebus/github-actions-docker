@@ -1,0 +1,47 @@
+name: docker build target
+description: docker build target and scan image
+
+inputs:
+  target:
+    description: Docker target to build
+    required: true
+
+  repository_name:
+    description: Repository name
+    required: false
+    default: ${{ github.event.repository.name }}
+
+  dockerfile:
+    description: Dockerfile to use for build
+    required: false
+    default: Dockerfile
+
+  image_tag_suffix:
+    description: Suffix to append to the image tag
+    required: false
+    default: latest
+
+runs:
+  using: composite
+
+  steps:
+    - name: 'docker build: ${{ inputs.dockerfile }}'
+      run: |
+        docker build . \
+          --file ${{ inputs.dockerfile }} \
+          --target ${{ inputs.target }} \
+          --tag ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
+
+    # TODO move to github-actions-containerization
+    - name: Scan ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
+      uses: anchore/scan-action@v3
+      id: scan
+      with:
+        image: ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
+        fail-build: false
+        output-format: sarif
+
+    - name: Upload SARIF
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif }}

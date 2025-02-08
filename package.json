@@ -1,0 +1,25 @@
+{
+  "name": "github-actions-docker",
+  "version": "1.0.0",
+  "description": "github reusable actions and workflows for docker",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/percebus/github-actions-docker.git"
+  },
+  "keywords": [
+    "github",
+    "actions",
+    "workflows",
+    "docker"
+  ],
+  "author": "JCystems",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/percebus/github-actions-docker/issues"
+  },
+  "homepage": "https://github.com/percebus/github-actions-docker#readme"
+}
