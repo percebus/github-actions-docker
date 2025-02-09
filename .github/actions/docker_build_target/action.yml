@@ -62,6 +62,7 @@ runs:
           --tag ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
 
     - uses: percebus/github-actions-containerization/.github/actions/scan-image@main
+      if: github.ref == 'refs/heads/main'
       with:
         image_tag: ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
         fail-build: ${{ inputs.fail-build }}
