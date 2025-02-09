@@ -35,6 +35,10 @@ jobs:
           # release
           - release
 
+        exclude:
+          - dockerfile: Dockerfile
+            target: release
+
         include:
           - dockerfile: Dockerfile
             image_tag_suffix: latest
