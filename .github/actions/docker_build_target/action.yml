@@ -31,6 +31,23 @@ inputs:
     required: false
     default: "--no-cache"
 
+  #
+  # scan-image
+  fail-build:
+    description: Fail the build if vulnerabilities are found
+    required: false
+    default: "false"
+
+  severity-cutoff:
+    description: The minimum severity level to report
+    required: false
+    default: "high"
+
+  only-fixed:
+    description: Only report vulnerabilities that have been fixed
+    required: false
+    default: "false"
+
 runs:
   using: composite
 
@@ -44,16 +61,9 @@ runs:
           --target ${{ inputs.target }} \
           --tag ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
 
-    # TODO move to github-actions-containerization
-    - name: Scan ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
-      uses: anchore/scan-action@v3
-      id: scan
+    - uses: percebus/github-actions-containerization/.github/workflows/scan-image.yml@main
       with:
-        image: ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
-        fail-build: false
-        output-format: sarif
-
-    - name: Upload SARIF
-      uses: github/codeql-action/upload-sarif@v3
-      with:
-        sarif_file: ${{ steps.scan.outputs.sarif }}
+        image_tag: ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
+        fail-build: ${{ inputs.fail-build }}
+        severity-cutoff: ${{ inputs.severity-cutoff }}
+        only-fixed: ${{ inputs.only-fixed }}

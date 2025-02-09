@@ -28,10 +28,6 @@ jobs:
           - Dockerfile
           - Dockerfile.next
 
-        image_tag_suffix:
-          - latest
-          - next
-
         target:
           # dev
           - tested
@@ -39,11 +35,11 @@ jobs:
           # release
           - release
 
-        exclude:
-          - dockerfile: Dockerfile.next
+        include:
+          - dockerfile: Dockerfile
             image_tag_suffix: latest
 
-          - dockerfile: Dockerfile
+          - dockerfile: Dockerfile.next
             image_tag_suffix: next
 
     runs-on: ubuntu-latest
