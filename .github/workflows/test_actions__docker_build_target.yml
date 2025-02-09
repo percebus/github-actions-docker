@@ -16,6 +16,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/docker_build_target
         with:
+          dockerfile: assets/docker/node/Dockerfile
           target: final
 
   matrix:
