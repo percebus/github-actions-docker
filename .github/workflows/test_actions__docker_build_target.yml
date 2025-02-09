@@ -43,7 +43,7 @@ jobs:
             image_tag_suffix: next
 
     runs-on: ubuntu-latest
-    name: "${{ matrix.image_tag_suffix }}: ${{ matrix.dockerfile }}:${{ matrix.target }}"
+    name: "${{ matrix.dockerfile }}: ${{ matrix.target }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/docker_build_target
