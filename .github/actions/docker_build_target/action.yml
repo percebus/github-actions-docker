@@ -61,7 +61,7 @@ runs:
           --target ${{ inputs.target }} \
           --tag ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
 
-    - uses: percebus/github-actions-containerization/.github/actions/scan-image.yml@main
+    - uses: percebus/github-actions-containerization/.github/actions/scan-image@main
       with:
         image_tag: ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
         fail-build: ${{ inputs.fail-build }}
