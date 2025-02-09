@@ -33,6 +33,11 @@ inputs:
 
   #
   # scan-image
+  scan-image:
+    description: Scan the built image for vulnerabilities
+    required: false
+    default: ${{ github.ref == 'refs/heads/main' }}
+
   fail-build:
     description: Fail the build if vulnerabilities are found
     required: false
@@ -62,7 +67,7 @@ runs:
           --tag ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
 
     - uses: percebus/github-actions-containerization/.github/actions/scan-image@main
-      if: github.ref == 'refs/heads/main'
+      if: ${{ inputs.scan-image == 'true' }}
       with:
         image_tag: ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
         fail-build: ${{ inputs.fail-build }}
