@@ -66,5 +66,5 @@ runs:
       with:
         image_tag: ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
         fail-build: ${{ inputs.fail-build }}
-        severity-cutoff: ${{ inputs.severity-cutoff }}
         only-fixed: ${{ inputs.only-fixed }}
+        severity-cutoff: ${{ inputs.severity-cutoff }}
