@@ -30,7 +30,7 @@
     "docker"
   ],
   "author": "JCystems",
-  "license": "SEE LICENSE IN LICENSE.md",
+  "license": "SEE LICENSE IN LICENSE",
   "bugs": {
     "url": "https://github.com/percebus/github-actions-docker/issues"
   },
