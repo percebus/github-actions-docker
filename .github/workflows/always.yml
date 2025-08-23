@@ -1,10 +1,40 @@
 name: "[C]ontinuous [I]ntegration"
+
 on:
   push:
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
+permissions:
+  contents: read
+
 jobs:
   lint:
-    uses: percebus/github-actions-npm/.github/workflows/npm_run_script.yml@main
+    uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
     with:
       script: lint
+
+  codeQL:
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - actions
+
+    name: "CodeQL: ${{ matrix.language }}"
+    steps:
+      - uses: percebus/github-actions-common/.github/actions/checkout@main
+
+      - name: setup CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: CodeQL
+        uses: github/codeql-action/analyze@v3
