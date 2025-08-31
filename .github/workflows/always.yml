@@ -15,7 +15,6 @@ jobs:
 
   codeQL:
     needs: lint
-    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
@@ -26,15 +25,9 @@ jobs:
       matrix:
         language:
           - actions
+          - javascript
 
     name: "CodeQL: ${{ matrix.language }}"
-    steps:
-      - uses: percebus/github-actions-common/.github/actions/checkout@main
-
-      - name: setup CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-
-      - name: CodeQL
-        uses: github/codeql-action/analyze@v3
+    uses: percebus/github-actions-compliance/.github/workflows/codeql_analyze.yml@main
+    with:
+      language: ${{ matrix.language }}
