@@ -7,6 +7,8 @@ description: docker build target and scan image
 #   security-events: write
 
 inputs:
+
+  # docker build
   target:
     description: Docker target to build
     required: true
@@ -41,6 +43,7 @@ inputs:
   scan-image:
     description: Scan the built image for vulnerabilities
     required: false
+    # FIXME use defaultBranch: main or master
     default: ${{ github.ref == 'refs/heads/main' }}
 
   fail-build:
