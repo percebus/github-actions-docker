@@ -11,6 +11,11 @@ inputs:
     description: Docker target to build
     required: true
 
+  working-directory:
+    description: Working directory
+    required: false
+    default: .
+
   repository_name:
     description: Repository name
     required: false
@@ -60,7 +65,7 @@ runs:
     - name: "docker build: ${{ inputs.dockerfile }}"
       shell: bash
       run: |
-        docker build . \
+        docker build ${{ inputs.working-directory }} \
           ${{ inputs.docker_cli_options }} \
           --file ${{ inputs.dockerfile }} \
           --target ${{ inputs.target }} \

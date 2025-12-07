@@ -59,6 +59,7 @@ jobs:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/build
         with:
-          dockerfile: assets/docker/node/${{ matrix.dockerfile }}
+          working-directory: assets/docker/node
+          dockerfile: ${{ matrix.dockerfile }}
           target: ${{ matrix.target }}
           image_tag_suffix: ${{ matrix.image_tag_suffix }}
