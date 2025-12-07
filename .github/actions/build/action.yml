@@ -7,9 +7,15 @@ description: docker build target and scan image
 #   security-events: write
 
 inputs:
+  # docker build
   target:
     description: Docker target to build
     required: true
+
+  working-directory:
+    description: Working directory
+    required: false
+    default: .
 
   repository_name:
     description: Repository name
@@ -36,6 +42,7 @@ inputs:
   scan-image:
     description: Scan the built image for vulnerabilities
     required: false
+    # FIXME use defaultBranch: main or master
     default: ${{ github.ref == 'refs/heads/main' }}
 
   fail-build:
@@ -60,9 +67,9 @@ runs:
     - name: "docker build: ${{ inputs.dockerfile }}"
       shell: bash
       run: |
-        docker build . \
+        docker build ${{ inputs.working-directory }} \
           ${{ inputs.docker_cli_options }} \
-          --file ${{ inputs.dockerfile }} \
+          --file ${{ inputs.working-directory }}/${{ inputs.dockerfile }} \
           --target ${{ inputs.target }} \
           --tag ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
 
