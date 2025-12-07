@@ -67,7 +67,7 @@ runs:
       run: |
         docker build ${{ inputs.working-directory }} \
           ${{ inputs.docker_cli_options }} \
-          --file ${{ inputs.dockerfile }} \
+          --file ${{ inputs.working-directory }}/${{ inputs.dockerfile }} \
           --target ${{ inputs.target }} \
           --tag ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
 

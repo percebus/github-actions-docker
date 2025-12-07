@@ -12,11 +12,12 @@
     "dockerlint:node:Dockerfile.next": "npm run dockerlint -- -f assets/docker/node/Dockerfile.next",
     "dockerlint:all": "npm run dockerlint:node:Dockerfile && npm run dockerlint:node:Dockerfile.next",
     "lint": "npm run prettier:check && npm run dockerlint:all",
-    "style": "npm run prettier:write",
-    "poststyle": "npm run lint",
+    "format": "npm run prettier:write",
+    "postformat": "npm run lint",
+    "style": "npm run format",
     "pretest": "npm run lint",
     "test": "exit 0",
-    "predev": "npm run style",
+    "predev": "npm run format",
     "dev": "npm run test"
   },
   "repository": {
