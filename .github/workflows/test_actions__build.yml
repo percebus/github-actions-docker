@@ -38,6 +38,7 @@ jobs:
       - name: docker push
         run: docker push ${{ steps.docker_build.outputs.image_tag }}
 
+  # TODO? test in a separate file?
   docker_run__default:
     needs: default
     runs-on: ubuntu-latest
@@ -61,16 +62,10 @@ jobs:
           - Dockerfile.next
 
         target:
+          - dev
+
           # dev
-          - tested
-
-          # release
-          - release
-
-        # Already tested in default
-        exclude:
-          - dockerfile: Dockerfile
-            target: release
+          - dist
 
         include:
           - dockerfile: Dockerfile
@@ -94,5 +89,5 @@ jobs:
       # TODO? push to ttl?
 
       - name: docker run
-        if: ${{ matrix.target == "tested" }}
+        if: matrix.target == "tested"
         run: docker run ${{ steps.docker_build.outputs.image_tag }}
