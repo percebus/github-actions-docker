@@ -58,7 +58,7 @@ inputs:
 outputs:
   image_tag:
     description: The tag of the built image
-    value: ${{ steps.output_image_tag.outputs.image_tag }}
+    value: ${{ steps.output.outputs.image_tag }}
 
 runs:
   using: composite
@@ -83,7 +83,7 @@ runs:
 
     - name: output
       shell: bash
-      id: output_image_tag
+      id: output
       run: |
         echo "${{ inputs.image_tag }}"
-        echo "image_tag=${{ inputs.image_tag }} >> $GITHUB_OUTPUT"
+        echo "image_tag='${{ inputs.image_tag }}' >> $GITHUB_OUTPUT"
