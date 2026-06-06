@@ -89,5 +89,5 @@ jobs:
       # TODO? push to ttl?
 
       - name: docker run
-        if: matrix.target == "tested"
+        if: matrix.target == 'tested'
         run: docker run ${{ steps.docker_build.outputs.image_tag }}
