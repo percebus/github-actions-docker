@@ -40,6 +40,7 @@ jobs:
 
   # TODO? test in a separate file?
   docker_run__default:
+    name: 'docker run: default'
     needs: default
     runs-on: ubuntu-latest
     steps:
