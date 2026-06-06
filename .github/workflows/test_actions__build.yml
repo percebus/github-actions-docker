@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE_TAG: ttl.sh/${{ github.event.repository.name }}:5m
+  IMAGE_TAG: ttl.sh/${{ github.event.repository.name }}.node.release:5m
 
 # NOTE: Fixes "Error: Resource not accessible by integration"
 permissions:
@@ -37,7 +37,6 @@ jobs:
           image_tag: ${{ env.IMAGE_TAG }}
 
       - name: docker push
-        shell: bash
         run: |
           echo "pushing image_tag:${{ steps.docker_build.outputs.image_tag }}"
           docker push ${{ steps.docker_build.outputs.image_tag }}
@@ -93,5 +92,5 @@ jobs:
       # TODO? push to ttl?
 
       - name: docker run
-        if: matrix.target == 'tested'
+        if: matrix.target == 'dev'
         run: docker run ${{ steps.docker_build.outputs.image_tag }}
