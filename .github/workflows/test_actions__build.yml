@@ -33,7 +33,7 @@ jobs:
           working-directory: assets/docker/node
           dockerfile: Dockerfile
           target: release
-          image_tag: ${{ IMAGE_TAG }}
+          image_tag: ${{ env.IMAGE_TAG }}
 
       - name: docker push
         run: docker push ${{ steps.docker_build.outputs.image_tag }}
