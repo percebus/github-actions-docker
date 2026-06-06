@@ -17,20 +17,15 @@ inputs:
     required: false
     default: .
 
-  repository_name:
-    description: Repository name
+  image_tag:
+    description: --tag
     required: false
-    default: ${{ github.event.repository.name }}
+    default: ${{ github.sha }}
 
   dockerfile:
     description: Dockerfile to use for build
     required: false
     default: Dockerfile
-
-  image_tag_suffix:
-    description: Suffix to append to the image tag
-    required: false
-    default: latest
 
   docker_cli_options:
     description: Additional options to pass to the docker build command
@@ -71,12 +66,18 @@ runs:
           ${{ inputs.docker_cli_options }} \
           --file ${{ inputs.working-directory }}/${{ inputs.dockerfile }} \
           --target ${{ inputs.target }} \
-          --tag ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
+          --tag ${{ inputs.image_tag }}
 
     - uses: percebus/github-actions-compliance/.github/actions/scan-image@main
       if: ${{ inputs.scan-image == 'true' }}
       with:
-        image_tag: ${{ inputs.repository_name }}.${{ inputs.target }}:${{ inputs.image_tag_suffix }}
+        image_tag: ${{ inputs.image_tag }}
         fail-build: ${{ inputs.fail-build }}
         only-fixed: ${{ inputs.only-fixed }}
         severity-cutoff: ${{ inputs.severity-cutoff }}
+
+    - name: output
+      shell: bash
+      run: |
+        echo "${{ inputs.image_tag }}"
+        echo "image_tag=${{ inputs.image_tag }} >> $GITHUB_OUTPUT"

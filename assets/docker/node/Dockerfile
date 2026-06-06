@@ -1,4 +1,4 @@
-FROM node:22 AS base
+FROM node:24 AS base
 
 FROM base AS project
 WORKDIR /usr/project
@@ -7,16 +7,11 @@ RUN ls -la
 
 FROM project AS dev
 RUN echo "base > dev"
-
-FROM dev AS tested
-RUN echo "base > dev > tested"
+CMD ["echo", "base > dev > tested"]
 
 FROM dev AS dist
 RUN echo "base > dev > dist"
 
-
 FROM project AS release
 RUN echo "base > release"
-
-FROM release AS final
-RUN echo "base > release > final"
+CMD ["echo", "base > release > final"]
