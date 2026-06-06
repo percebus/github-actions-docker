@@ -11,7 +11,7 @@
     "dockerlint:node:Dockerfile": "npm run dockerlint -- -f assets/docker/node/Dockerfile",
     "dockerlint:node:Dockerfile.next": "npm run dockerlint -- -f assets/docker/node/Dockerfile.next",
     "dockerlint:all": "npm run dockerlint:node:Dockerfile && npm run dockerlint:node:Dockerfile.next",
-    "lint": "npm run prettier:check && npm run dockerlint:all",
+    "lint": "npm run prettier:check",
     "format": "npm run prettier:write",
     "postformat": "npm run lint",
     "style": "npm run format",

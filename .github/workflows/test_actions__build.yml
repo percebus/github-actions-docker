@@ -36,7 +36,9 @@ jobs:
           image_tag: ${{ env.IMAGE_TAG }}
 
       - name: docker push
-        run: docker push ${{ steps.docker_build.outputs.image_tag }}
+        run: |
+          echo "pushing image_tag:${{ steps.docker_build.outputs.image_tag }}"
+          docker push ${{ steps.docker_build.outputs.image_tag }}
 
   # TODO? test in a separate file?
   docker_run__default:
