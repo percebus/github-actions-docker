@@ -1,4 +1,4 @@
-FROM node:22 AS base
+FROM node:lts AS base
 
 FROM base AS project
 WORKDIR /usr/project
@@ -6,17 +6,18 @@ COPY . .
 RUN ls -la
 
 FROM project AS dev
-RUN echo "base > dev"
-
-FROM dev AS tested
-RUN echo "base > dev > tested"
+CMD ["echo", "base > project > dev"]
 
 FROM dev AS dist
-RUN echo "base > dev > dist"
+RUN mkdir -p dist
+RUN echo "prod" > dist/artifact.txt
 
+FROM node:lts-alpine AS release
+WORKDIR /opt/app
+COPY --from=dist /usr/project/dist ./dist
 
-FROM project AS release
-RUN echo "base > release"
-
-FROM release AS final
-RUN echo "base > release > final"
+FROM release AS app
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nodejs -u 1001
+USER nodejs
+CMD ["cat", "dist/artifact.txt"]

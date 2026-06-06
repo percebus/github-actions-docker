@@ -20,17 +20,39 @@ jobs:
   default:
     name: default
     runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.docker_build.outputs.image_tag }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
+
       - uses: ./.github/actions/build
+        id: docker_build
         with:
           working-directory: assets/docker/node
           dockerfile: Dockerfile
-          target: final
+          target: app
+          image_tag: ttl.sh/percebus.${{ github.event.repository.name }}.node.app:5m
 
+      - name: docker push
+        run: |
+          echo "pushing image_tag:${{ steps.docker_build.outputs.image_tag }}"
+          docker push ${{ steps.docker_build.outputs.image_tag }}
+
+  # TODO? test in a separate file?
+  docker_run__default:
+    name: "docker run: default"
+    needs: default
+    runs-on: ubuntu-latest
+    steps:
+      - name: docker pull
+        run: docker pull ${{ needs.default.outputs.image_tag }}
+
+      - name: docker run
+        run: docker run ${{ needs.default.outputs.image_tag }}
+
+  #
   matrix:
     needs: default
-    if: always()
     strategy:
       fail-fast: false
       max-parallel: 10
@@ -40,31 +62,31 @@ jobs:
           - Dockerfile.next
 
         target:
-          # dev
-          - tested
+          - dev # run tests
 
-          # release
           - release
-
-        # Already tested in default
-        exclude:
-          - dockerfile: Dockerfile
-            target: release
 
         include:
           - dockerfile: Dockerfile
-            image_tag_suffix: latest
+            version: latest
 
           - dockerfile: Dockerfile.next
-            image_tag_suffix: next
+            version: next
 
     runs-on: ubuntu-latest
     name: "${{ matrix.dockerfile }}: ${{ matrix.target }}"
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
       - uses: ./.github/actions/build
+        id: docker_build
         with:
           working-directory: assets/docker/node
           dockerfile: ${{ matrix.dockerfile }}
           target: ${{ matrix.target }}
-          image_tag_suffix: ${{ matrix.image_tag_suffix }}
+          image_tag: ${{ github.event.repository.name }}.${{ matrix.target }}:${{ matrix.version }}
+
+      # TODO? push to ttl?
+
+      - name: docker run
+        if: matrix.target == 'dev'
+        run: docker run ${{ steps.docker_build.outputs.image_tag }}
