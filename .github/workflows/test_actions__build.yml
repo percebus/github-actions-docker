@@ -27,6 +27,7 @@ jobs:
       image_tag: ${{ steps.docker_build.outputs.image_tag }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
+
       - uses: ./.github/actions/build
         id: docker_build
         with:
@@ -36,6 +37,7 @@ jobs:
           image_tag: ${{ env.IMAGE_TAG }}
 
       - name: docker push
+        shell: bash
         run: |
           echo "pushing image_tag:${{ steps.docker_build.outputs.image_tag }}"
           docker push ${{ steps.docker_build.outputs.image_tag }}

@@ -85,5 +85,4 @@ runs:
       shell: bash
       id: output
       run: |
-        echo "${{ inputs.image_tag }}"
         echo "image_tag='${{ inputs.image_tag }}' >> $GITHUB_OUTPUT"
