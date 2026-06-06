@@ -7,6 +7,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -29,7 +33,7 @@ jobs:
         language:
           - actions
 
-    name: "CodeQL: ${{ matrix.language }}"
+    name: CodeQL analyze
     uses: percebus/github-actions-compliance/.github/workflows/codeql_analyze.yml@main
     with:
       language: ${{ matrix.language }}
