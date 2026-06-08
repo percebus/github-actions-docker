@@ -20,8 +20,6 @@ jobs:
   default:
     name: default
     runs-on: ubuntu-latest
-    outputs:
-      image_tag: ${{ steps.docker_build.outputs.image_tag }}
     steps:
       - uses: percebus/github-actions-common/.github/actions/checkout@main
 
@@ -37,7 +35,10 @@ jobs:
         run: |
           echo "pushing image_tag:${{ steps.docker_build.outputs.image_tag }}"
           docker push ${{ steps.docker_build.outputs.image_tag }}
+    outputs:
+      image_tag: ${{ steps.docker_build.outputs.image_tag }}
 
+  #
   # TODO? test in a separate file?
   docker_run__default:
     name: "docker run: default"
