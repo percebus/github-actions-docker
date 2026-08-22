@@ -17,6 +17,7 @@ permissions:
 jobs:
   lint:
     uses: percebus/github-actions-npm/.github/workflows/run_script.yml@main
+    name: npm
     with:
       script: lint
 
