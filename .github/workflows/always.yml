@@ -27,13 +27,7 @@ jobs:
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language:
-          - actions
-
-    name: CodeQL analyze
     uses: percebus/github-actions-compliance/.github/workflows/codeql_analyze.yml@main
+    name: CodeQL analyze
     with:
-      language: ${{ matrix.language }}
+      language: actions
