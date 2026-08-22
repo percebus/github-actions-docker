@@ -30,7 +30,7 @@ inputs:
   docker_cli_options:
     description: Additional options to pass to the docker build command
     required: false
-    default: "--no-cache"
+    default: "--rm --no-cache"
 
   #
   # scan-image
